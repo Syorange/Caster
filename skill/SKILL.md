@@ -1,5 +1,5 @@
 ---
-name: Create a private podcast
+name: Caster
 description: >-
   Use when a user wants their own podcast made for them: they describe the kind
   of show they want (topic, language, length, hosts, sources, schedule) and you
@@ -8,7 +8,7 @@ description: >-
   app. Also use it to add an episode to such a show, change a show, or fix a
   failed publish.
 ---
-# Create a private podcast
+# Caster
 
 The toolkit lives on the shared box at `/workspace/podcast-kit` (read its `README.md` for full schemas and options). Each show is one folder, `/workspace/podcasts/<slug>/`, holding `show.json`, `FORMAT.md`, `config.env`, `assets/`, `episodes/<DATE>-<TYPE>/` and `state/`. Episodes are spoken with edge-tts voices, mixed with synthesised music, and published as a static RSS feed on GitHub Pages under a secret path.
 

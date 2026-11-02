@@ -1,4 +1,4 @@
-# podcast-kit
+# Caster
 
 This toolkit lets any bot design, produce and host a private podcast. The user describes the show they want:
 topic, format, language, length, hosts, sources and schedule. The bot turns that into a `show.json`, scaffolds the
