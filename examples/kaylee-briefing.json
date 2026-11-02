@@ -1,0 +1,54 @@
+{
+  "_notes": [
+    "Example: Kaylee's weekday US-market morning briefing, re-expressed as a podcast-kit show.json.",
+    "No hosting details here: REPO_DIR/BASE_URL/SECRET live only in the show folder's config.env (chmod 600).",
+    "Her live setup currently serves this show AND What's News from ONE combined feed. To reproduce that exactly, merge both into one show.json using episode.types (see kaylee-whats-news.json); as separate shows each gets its own feed.",
+    "music.style 'news' is the kit's re-synthesised newsroom preset (D minor, like Caster's original 116 BPM jingle). To keep Caster's exact sound instead, set music.files to copies of its intro/sting/outro/bed wav files."
+  ],
+  "slug": "us-market-morning-briefing",
+  "title": "Kaylee 美股晨间新闻",
+  "subtitle": "每个工作日早上，用故事和逻辑讲清楚昨晚的美股",
+  "author": "Kaylee 美股晨间新闻",
+  "description": "私人订阅，仅供个人收听。每个工作日早上更新的美股晨间新闻：两位主播用故事和因果逻辑讲清楚昨晚华尔街发生的事。AI撰稿与配音。",
+  "language": "zh-CN",
+  "category": "News", "subcategory": "Business News",
+  "explicit": false, "private": true,
+  "timezone": "Australia/Brisbane",
+  "hosts": [
+    {"id": "A", "name": "主播A", "gender": "m", "role": "male anchor, leads the big stories", "voice": "zh-CN-YunyangNeural", "rate": "+4%", "pitch": "+0Hz"},
+    {"id": "B", "name": "主播B", "gender": "f", "role": "female co-host: snapshot, natural follow-up questions, watchlist", "voice": "zh-CN-XiaoxiaoNeural", "rate": "+6%", "pitch": "+0Hz"}
+  ],
+  "length": {"target_minutes": 29, "unit": "chars", "per_minute": 300, "tolerance": 0.05},
+  "episode": {"default_type": "brief", "title_template": "美股晨间新闻｜{md_cjk}｜{headline}"},
+  "retention_days": 3,
+  "schedule": {"cadence": "weekdays", "days": ["Mon", "Tue", "Wed", "Thu", "Fri"], "publish_by": "07:50",
+               "notes": "Kaylee listens while driving; covers the previous US session."},
+  "sources": [
+    {"name": "Bloomberg", "kind": "login", "notes": "Kaylee's subscription via the browser; prefer Big Take / Features / Businessweek / analysis for the in-depth segment"},
+    {"name": "Public news sites", "kind": "site", "notes": "public reporting for facts and confirmation (name the outlet on air)"}
+  ],
+  "format": {
+    "segments": [
+      {"name": "Cold open", "what": "A, one line with the day's 1-2 headlines, ending 「这里是Kaylee美股晨间新闻。」 then [INTRO]"},
+      {"name": "Greeting + rundown", "what": "A greets and lists the 3-4 stories, B says hi; [BED ON] for a 2-3 sentence market mood (direction, no figures), [BED OFF]"},
+      {"name": "Main stories (2-3, in depth)", "what": "each starts with [STING]: what happened -> backstory / cause -> who wins and loses -> what it means for the stocks; alternate A/B, B asks the natural follow-up the facts answer"},
+      {"name": "In-depth segment", "what": "at least one long-term trend from Bloomberg investigative/analysis pieces, why it matters for years, not days"},
+      {"name": "快讯", "what": "4-6 one-to-three-sentence items"},
+      {"name": "Watchlist + recap + sign-off", "what": "[STING], what to watch today/this week, 3-4 point recap, A signs off, B 「我们明天早上见。」, [OUTRO]"}
+    ],
+    "tone": "Natural spoken Mandarin for a commute; story and cause-and-effect over data. People, places, companies, tickers, index and product names stay in English.",
+    "max_stings": 6, "max_bed_sections": 3, "max_line_chars": 90,
+    "rules": [
+      "NUMBERS: 「我要的是故事和逻辑性，不是一个个数据」. Replace percentages and figures with meaning and scale in words; at most ~1 number per story and only when it is the point. No index levels, lists of percentages, tables or futures figures.",
+      "Fact vs analysis: confirmed facts name their source (根据S-1 / WSJ报道 / Bloomberg报道); analysis is labelled (「这是我们的分析，不是已经证实的事实」).",
+      "Prioritise: big-tech AI strategy/spending/risk as business stories; industry insider stories (Musk/SpaceX/Tesla, Anthropic, OpenAI, who pays whom, power struggles); oil and geopolitics and their knock-on effects; China's structural shifts and capital flows; big consumer M&A; scandals, hacks, halts and drama; big-picture Fed/macro commentary.",
+      "De-prioritise or skip: market-wrap and sentiment pieces, bond/credit/options technicals, plain earnings results, small caps, quirky items, earnings calendars.",
+      "Long-term value over daily noise: daily price moves get at most a sentence; don't build a main story around 'X fell today' unless the cause is a lasting shift.",
+      "Prosody: A(-3%..-5%) for serious/caveat lines, (+2%..+4%,+1..+2Hz) for questions/lighter turns; nothing bigger.",
+      "Delivery: link the published episode; never attach the MP3."
+    ]
+  },
+  "music": {"style": "news"},
+  "audio": {"channels": 1, "bitrate": "96k"},
+  "cover": {"tagline": "每个工作日 · 7:50 前更新"}
+}

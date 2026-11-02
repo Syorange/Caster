@@ -1,0 +1,74 @@
+# FORMAT: $title
+
+This file holds the writing rules for this show. new_show.py generated it from show.json. Before the first
+episode, the bot that runs the show fills in the sections marked FILL IN, using the owner's request, then keeps the
+file up to date as feedback comes in. Read it before writing every episode.
+
+## Show facts (from show.json; edit show.json, not this table)
+| | |
+|---|---|
+| Language | $language |
+| Hosts | $hosts_inline |
+| Target length | $target_minutes min ≈ $target_units $unit (at $per_minute $unit/min; calibrate from `measured_pace_per_min` in each episode's `.report.json`) |
+| Line length | at most about $max_line_chars characters per line, 1-3 sentences |
+| Schedule | $schedule |
+| Retention | $retention |
+| Music | style `$music_style`; at most $max_stings [STING]/[SWOOSH] and $max_bed_sections bed sections per episode |
+
+### Hosts
+$hosts_table
+
+## Episode structure (FILL IN)
+$segments
+
+## Tone and voice (FILL IN)
+$tone
+
+## Cue script syntax
+Save the script as `episodes/<DATE>-<TYPE>/script.txt` (UTF-8, one cue per line; blank lines and `#` comments are ignored).
+```
+$example_lines
+@speaker Jane Doe | f | guest               declare an extra voice (quote reader, clip, translated speaker)
+@speaker Clip 1 | m | clip | en-GB-RyanNeural   optional explicit edge-tts voice
+Jane Doe: text                              line by a declared speaker
+[INTRO] [OUTRO]                             theme music: speech starts as the intro resolves; outro plays after the last line
+[STING]                                     short musical transition between segments
+[SWOOSH]                                    lighter whoosh transition (quick items, change of topic)
+[BED ON] ... [BED OFF]                      soft music bed under the lines in between (ducked ~26 LU under voice)
+[PAUSE 0.8]                                 silence in seconds
+```
+Prosody overrides after the speaker id: `(rate)`, `(rate,pitch)` or `(rate,pitch,volume)`, e.g. `(-3%)` for a serious
+caveat or `(+2%,+1Hz)` for a light question. Keep them small (about ±8 %, ±3 Hz). The renderer also strips any
+tag that ends up inside the text, so a tag is never read aloud.
+Check every script before rendering: `render.py SHOW_DIR script.txt --check` (syntax, speakers, length, cue limits).
+
+## Sourcing and honesty rules (always apply)
+1. Never invent quotes, interviews, guests, listener mail, reactions or anecdotes. Quote someone only with their
+   name and the outlet, word for word as published.
+2. Every factual claim must trace to a source you read this run. List the sources in `episodes/<id>/sources.md`
+   (title, outlet, URL, time read).
+3. Keep fact and analysis apart. Attribute confirmed facts ("according to …") and label analysis as analysis.
+4. Summarise in your own words. Do not read paywalled or copyrighted text out in full. A translation of someone
+   else's show is for personal use only: say in the episode description that an AI translated and voiced it, and link the original.
+5. Give dates and time zones explicitly. If something is unconfirmed or still developing, say so on air.
+6. To fix a mistake, edit the script, re-render and re-publish with the same DATE-TYPE. The episode keeps its guid
+   and pubDate.
+7. Write for the ear: short sentences, names before pronouns, no tables, no URLs read aloud, numbers only when they
+   matter (round them and explain what they mean).
+
+## Show-specific rules
+$rules
+
+## Sources to use
+$sources
+
+## Per-episode checklist
+1. Gather the material (sources above) and save notes and links to `episodes/<id>/sources.md`.
+2. Write `episodes/<id>/script.txt` following this file.
+3. Run `render.py SHOW_DIR episodes/<id>/script.txt --check` and fix every error. Treat warnings as judgement calls.
+4. Run `make_episode.sh SHOW_DIR DATE TYPE "headline" "description"` to render and publish. With `RENDER_ONLY=1` it
+   renders without publishing.
+5. Read `episode.mp3.report.json`: the duration should be near the target, `final.true_peak_dbtp` at most -1,
+   `final.integrated_lufs` near -16, and `warnings` should be empty or understood.
+6. If publish exited 2 (not live yet), run `verify.sh SHOW_DIR <id>` a few minutes later. Report the exit code
+   honestly, never "done" unless it is live.

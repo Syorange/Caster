@@ -1,0 +1,71 @@
+{
+  "_notes": [
+    "Example: Kaylee's What's News 中文版 (sentence-by-sentence Mandarin translation + AI voices of WSJ What's News), as a podcast-kit show.json.",
+    "This show needs a SOURCE ADAPTER the generic kit does not include: Caster's wn_check.py (polls the WSJ feed, downloads the edition, fetches WSJ's official transcript or falls back to faster-whisper + diarisation). The kit takes over from the translated cue script onward (render, feed, publish, verify, prune).",
+    "Episode types carry the per-edition title templates. To keep her current single combined feed, add the 'brief' type from kaylee-briefing.json to episode.types here and use one show folder.",
+    "No hosting details here: those live only in config.env."
+  ],
+  "slug": "whats-news-zh",
+  "title": "What's News 中文版",
+  "subtitle": "WSJ What's News 每期的中文逐句翻译配音版",
+  "author": "Kaylee 美股晨间新闻",
+  "description": "私人订阅，仅供个人收听。WSJ What's News 每期（早间版、晚间版及周末版）的中文逐句翻译配音版，原节目发布后尽快更新。由AI翻译配音，非WSJ官方出品。",
+  "language": "zh-CN",
+  "category": "News", "subcategory": "Business News",
+  "explicit": false, "private": true,
+  "timezone": "Australia/Brisbane",
+  "hosts": [
+    {"id": "Luke Vargas", "gender": "m", "role": "WSJ host (translated)", "voice": "zh-CN-YunyangNeural", "rate": "+4%"},
+    {"id": "Alex Ossola", "gender": "f", "role": "WSJ host (translated)", "voice": "zh-CN-XiaoxiaoNeural", "rate": "+6%"},
+    {"id": "Annmarie Fertoli", "gender": "f", "role": "WSJ host (translated)", "voice": "zh-CN-XiaoxiaoNeural", "rate": "+6%"},
+    {"id": "Pierre Bienaimé", "gender": "m", "role": "WSJ host (translated)", "voice": "zh-CN-YunyangNeural", "rate": "+4%"},
+    {"id": "Daniel Bach", "gender": "m", "role": "WSJ host (translated)", "voice": "zh-CN-YunyangNeural", "rate": "+4%"},
+    {"id": "Kate Bullivant", "gender": "f", "role": "WSJ host (translated)", "voice": "zh-CN-XiaoxiaoNeural", "rate": "+6%"}
+  ],
+  "voice_pool": {
+    "m": ["zh-CN-YunjianNeural", "en-US-AndrewMultilingualNeural", "en-US-BrianMultilingualNeural", "zh-CN-YunxiNeural", "fr-FR-RemyMultilingualNeural", "zh-CN-YunyangNeural"],
+    "f": ["en-US-EmmaMultilingualNeural", "en-US-AvaMultilingualNeural", "zh-TW-HsiaoChenNeural", "zh-CN-XiaoyiNeural", "de-DE-SeraphinaMultilingualNeural", "fr-FR-VivienneMultilingualNeural", "zh-CN-XiaoxiaoNeural"]
+  },
+  "voice_defaults": {"zh-CN-YunyangNeural": {"rate": "+4%"}, "zh-CN-XiaoxiaoNeural": {"rate": "+6%"}},
+  "length": {"target_minutes": 15, "unit": "chars", "per_minute": 300, "tolerance": 0.6},
+  "episode": {
+    "default_type": "wn-am",
+    "title_template": "What's News 中文版｜{md_cjk}｜{headline}",
+    "source_link_label": "原节目 / Original",
+    "types": {
+      "wn-am": {"title_template": "What's News 中文版｜早间版 {md_cjk}｜{headline}"},
+      "wn-pm": {"title_template": "What's News 中文版｜晚间版 {md_cjk}｜{headline}"},
+      "wn-sat": {"title_template": "What's News 中文版｜周六市场版 {md_cjk}｜{headline}"},
+      "wn-sun": {"title_template": "What's News 中文版｜周日特别版 {md_cjk}｜{headline}"},
+      "wn-bonus": {"title_template": "What's News 中文版｜特别加播 {md_cjk}｜{headline}"}
+    }
+  },
+  "retention_days": 3,
+  "schedule": {"cadence": "event-driven", "notes": "check the WSJ What's News feed regularly; publish each new A.M./P.M./weekend/bonus edition as soon as its transcript is available. DATE = the US date of the original."},
+  "sources": [
+    {"name": "WSJ What's News podcast feed", "kind": "rss", "notes": "the original audio and episode description"},
+    {"name": "WSJ official transcript (public video API, by RSS guid)", "kind": "api", "notes": "primary transcript, real speaker names; posted ~30 min to ~3.5 h after the audio"},
+    {"name": "faster-whisper + diarisation", "kind": "local", "notes": "fallback only when the official transcript is not yet posted; say so if a gap could not be translated"}
+  ],
+  "format": {
+    "segments": [
+      "Cold open: the original's teaser headlines, then [INTRO]",
+      "Host intro (今天是…我是《华尔街日报》的…这里是What's News早间版/晚间版…)",
+      "The original's segments in order; [STING] only where the original changes segment (at most 3)",
+      "Sign-off and production credits, then [OUTRO]"
+    ],
+    "tone": "Faithful, natural spoken Mandarin (not stiff written Chinese).",
+    "max_stings": 3, "max_bed_sections": 0, "max_line_chars": 90,
+    "rules": [
+      "FAITHFUL, SENTENCE BY SENTENCE: translate every editorial sentence in order; never summarise, merge, reorder, add explanations or invent anything. Keep hedges, attributions and quotes exactly (「引用原话……引用结束」).",
+      "Proper nouns stay in English; common institutions may be glossed once (联邦贸易委员会FTC). The Wall Street Journal = 《华尔街日报》.",
+      "Declare every non-host speaker once with @speaker Name | m/f | reporter/guest/clip; unnamed voices: Voter 1, Speaker 2…; the same person keeps the same name all episode.",
+      "DROP sponsor/ad reads, newsletter promos, song lyrics/music clips, hosting boilerplate. KEEP teasers, host intro, sign-off and credits.",
+      "Prosody tag goes right after the speaker name: questions (+2%,+1Hz), sombre lines (-3%); nothing bigger.",
+      "Description must say it is an AI translation and voicing, not an official WSJ product, and link the original (pass the link as LINK to make_episode.sh)."
+    ]
+  },
+  "music": {"style": "news"},
+  "audio": {"channels": 1, "bitrate": "96k"},
+  "cover": {"tagline": "WSJ What's News · 中文逐句翻译配音"}
+}
